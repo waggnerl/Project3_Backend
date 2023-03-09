@@ -15,6 +15,15 @@ const app = express();
 require("./config")(app);
 
 // 👇 Start handling routes here
+const profileRoutes = require("./routes/profile.routes");
+app.use("/profile", profileRoutes);
+
+const studentRoutes = require("./routes/student.routes");
+app.use("/student", studentRoutes);
+
+const trainRoutes = require("./routes/train.routes");
+app.use("/train", trainRoutes);
+
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
