@@ -1,26 +1,25 @@
 const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
-const userSchema = new Schema(
+const trainSchema = new Schema(
   {
     name: {
       type: String,
       required: [true, "Name is required."],
     },
-    email: {
-      type: String,
+    time: {
+      type: Number,
       required: [true, "Email is required."],
-      unique: true,
+      require: true,
       
     },
-    password: {
-      type: String,
-      required: [true, "Password is required."],
-    },
-    img: { type: String },
-    students: [ { 
-      type: Schema.Types.ObjectId, ref:'User' 
-    } ]
+    interval: {
+        type: String,
+        require: true},
+        
+    exercises: [{
+        type: Schema.Types.ObjectId,
+        ref:'Exercises' }]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
@@ -28,6 +27,6 @@ const userSchema = new Schema(
   }
 );
 
-const User = model("User", userSchema);
+const Train = model("Train", trainSchema);
 
-module.exports = User;
+module.exports = Train;
