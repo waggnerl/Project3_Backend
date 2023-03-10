@@ -17,7 +17,7 @@ router.get("/:trainId", (req, res, next) => {
 router.post("create/:studentId", (req, res, next) => {
   const { studentId } = req.params;
   const { date } = req.body;
-  const
+  
 });
 
 // Edit a specific train
