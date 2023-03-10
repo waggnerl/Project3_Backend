@@ -7,19 +7,17 @@ const trainSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
-    time: {
-      type: Number,
-      required: [true, "Email is required."],
+    date: {
+      type: Date,
+      required: [true, "Date is required."],
       require: true,
-      
     },
-    interval: {
-        type: String,
-        require: true},
-        
-    exercises: [{
+    exercises: [
+      {
         type: Schema.Types.ObjectId,
-        ref:'Exercises' }]
+        ref: "Exercises",
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

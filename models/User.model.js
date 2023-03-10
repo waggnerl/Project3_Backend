@@ -11,16 +11,25 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Email is required."],
       unique: true,
-      
     },
     password: {
       type: String,
       required: [true, "Password is required."],
     },
+    role: { type: String, enum: ["personal", "student"], required: true },
     img: { type: String },
-    students: [ { 
-      type: Schema.Types.ObjectId, ref:'User' 
-    } ]
+    students: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    trains: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Train",
+      },
+    ],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
