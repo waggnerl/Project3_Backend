@@ -1,35 +1,57 @@
 const express = require("express");
 const router = express.Router();
-const User = require('../models/User.model')
-
-// Get all trains
-router.get("/", (req, res, next) => {
-  res.json("All good in here");
-});
+const User = require("../models/User.model");
+const Train = require("../models/Train.model");
+const Exercise = require("../models/Exercises.model");
 
 // Get a specific train
-router.get("/:trainId", (req, res, next) => {
-  const { trainId } = req.params;
-  res.json("All good in here");
+router.get("/:trainId", async (req, res, next) => {
+  try {
+    const { trainId } = req.params;
+    const train = await Train.findById(trainId);
+    return res.json(train);
+  } catch (err) {
+    console.log(err);
+    return res.json(err);
+  }
 });
 
 // Create a specific train
-router.post("create/:studentId", (req, res, next) => {
-  const { studentId } = req.params;
-  const { date } = req.body;
-  const
+router.post("/create", async (req, res, next) => {
+  try {
+    const { name, description, interval, studentId } = req.body;
+    const newTrain = await Train.create({ name, description, interval });
+    await User.findByIdAndUpdate(studentId, { $push: { trains: newTrain } });
+    return res.json(newTrain);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // Edit a specific train
-router.put("/:trainId", (req, res, next) => {
-  const { trainId } = req.params;
-  res.json("All good in here");
+router.put("/update", async (req, res, next) => {
+  const { trainId, name, description, interval } = req.body;
+  await Train.findByIdAndUpdate(trainId, {
+    name,
+    description,
+    interval,
+  });
+  const trainUpdated = await Train.findById(trainId);
+  res.json(trainUpdated);
 });
 
 // Delete a specific train
-router.post("delete/:trainId", (req, res, next) => {
-  const { trainId } = req.params;
-  res.json("All good in here");
+router.post("/delete", async (req, res, next) => {
+  const { trainId } = req.body;
+  // await User.findByIdAndUpdate(trainId, {
+  //   $pull: { trains: trainId },
+  // });
+  const trainToDelete = await Train.findById(trainId);
+  console.log(trainToDelete.exercises);
+  // await Train.deleteOne({ _id: trainId });
+  await Exercise.deleteMany({ _id: { $in: deletedTrain.exercises } });
+  // res.json(deletedTrain);
+  return;
 });
 
 module.exports = router;
