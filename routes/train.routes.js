@@ -42,16 +42,23 @@ router.put("/update", async (req, res, next) => {
 
 // Delete a specific train
 router.post("/delete", async (req, res, next) => {
-  const { trainId } = req.body;
-  // await User.findByIdAndUpdate(trainId, {
-  //   $pull: { trains: trainId },
-  // });
-  const trainToDelete = await Train.findById(trainId);
-  console.log(trainToDelete.exercises);
-  // await Train.deleteOne({ _id: trainId });
-  await Exercise.deleteMany({ _id: { $in: deletedTrain.exercises } });
-  // res.json(deletedTrain);
-  return;
+  try {
+    const { trainId } = req.body;
+    // await User.findByIdAndUpdate(trainId, {
+    //   $pull: { trains: trainId },
+    // });
+    const trainToDelete = await Train.findById(trainId);
+
+    const exercisesToDelete = trainToDelete.exercises;
+
+    await Exercise.deleteMany({ _id: { $in: exercisesToDelete } });
+    await Train.deleteOne({ _id: trainId });
+    res.json(trainToDelete);
+    return trainToDelete;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
 });
 
 module.exports = router;
