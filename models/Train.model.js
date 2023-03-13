@@ -7,9 +7,13 @@ const trainSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
-    date: {
-      type: Date,
-      required: [true, "Date is required."],
+    description: {
+      type: String,
+      required: [true, "Name is required."],
+    },
+    interval: {
+      type: String,
+      required: [true, "Interval is required."],
       require: true,
     },
     exercises: [

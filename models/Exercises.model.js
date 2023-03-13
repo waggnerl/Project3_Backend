@@ -8,19 +8,31 @@ const exercisesSchema = new Schema(
       required: [true, "Name is required."],
     },
     description: {
-        type: String,
-        require: true},
+      type: String,
+      require: true,
+    },
     interval: {
-        type: String,
-        require: true},
-        
-    reps: [ {
+      type: Number,
+      require: true,
+    },
+    reps: [
+      {
         type: Number,
-        require: true } ],
+        require: true,
+      },
+    ],
     sets: {
-        type : Number,
-        require: true },
+      type: Number,
+      require: true,
+    },
+    activicties: [
+      {
+        type: Array,
+        require: true,
+      },
+    ],
   },
+
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
