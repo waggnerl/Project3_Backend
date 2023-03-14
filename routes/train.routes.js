@@ -16,6 +16,18 @@ router.get("/:trainId", async (req, res, next) => {
   }
 });
 
+// get all trains by student
+router.get("/all/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const train = await User.findById(userId).populate("trains");
+    return res.json(train);
+  } catch (err) {
+    console.log(err);
+    return res.json(err);
+  }
+});
+
 // Create a specific train
 router.post("/create", async (req, res, next) => {
   try {
