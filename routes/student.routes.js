@@ -8,7 +8,18 @@ router.get("/:personalId", async (req, res, next) => {
     const { personalId } = req.params;
     const personal = await User.findById(personalId);
     const personalStudents = await personal.populate("students");
-    return res.json(personalStudents);
+    return res.json(personalStudents.students);
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+});
+
+// Get the list of students
+router.get("/", async (req, res, next) => {
+  try {
+    const students = await User.find({ role: "student" });
+    return res.json(students);
   } catch (err) {
     console.log(err);
     return;
@@ -28,6 +39,24 @@ router.post("/:personalId/:studentId", async (req, res, next) => {
     );
 
     return res.json({ studentsId: personalStudents.students });
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+});
+
+router.post("/:personalId/:studentId/delete", async (req, res, next) => {
+  try {
+    const { personalId, studentId } = req.params;
+    await User.findByIdAndUpdate(personalId, {
+      $pull: { students: studentId },
+    });
+
+    const personalStudents = await User.findById(personalId).populate(
+      "students"
+    );
+
+    return res.json("deleted user with success");
   } catch (err) {
     console.log(err);
     return;
