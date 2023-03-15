@@ -16,6 +16,18 @@ router.get("/:exetciseId", async (req, res, next) => {
   }
 });
 
+// Get all exercise by user
+router.get("/getAll/:trainId", async (req, res, next) => {
+  try {
+    const { trainId } = req.params;
+    const exercises = await Train.findById(trainId).populate("exercises");
+    return res.json(exercises);
+  } catch (err) {
+    console.log(err);
+    return res.json(err);
+  }
+});
+
 // Create a specific exercise
 router.post("/create", async (req, res, next) => {
   try {

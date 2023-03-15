@@ -12,17 +12,17 @@ const exercisesSchema = new Schema(
       require: true,
     },
     interval: {
-      type: Number,
+      type: String,
       require: true,
     },
     reps: [
       {
-        type: Number,
+        type: String,
         require: true,
       },
     ],
     sets: {
-      type: Number,
+      type: String,
       require: true,
     },
     activicties: [
