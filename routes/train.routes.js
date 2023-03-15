@@ -34,9 +34,9 @@ router.post("/create", async (req, res, next) => {
     const { name, description, interval, studentId } = req.body;
     const newTrain = await Train.create({ name, description, interval });
     await User.findByIdAndUpdate(studentId, { $push: { trains: newTrain } });
-    return res.json(newTrain);
+    return res.status(200).json({ message: "Train created successfully" });
   } catch (err) {
-    console.log(err);
+    res.status(400).json({ message: "Train not created" });
   }
 });
 
@@ -65,11 +65,10 @@ router.post("/delete", async (req, res, next) => {
 
     await Exercise.deleteMany({ _id: { $in: exercisesToDelete } });
     await Train.deleteOne({ _id: trainId });
-    res.json(trainToDelete);
-    return trainToDelete;
+
+    return res.status(200).json({ message: "Train deleted successfully" });
   } catch (err) {
-    console.log(err);
-    return err;
+    return res.status(400).json({ message: "Train not deleted" });
   }
 });
 
