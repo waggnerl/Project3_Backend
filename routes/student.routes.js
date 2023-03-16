@@ -33,10 +33,8 @@ router.post("/:personalId/:studentId", async (req, res, next) => {
 
     const personalStudents = await User.findById(personalId);
     const validate = personalStudents.students.filter((student, index) => {
-      console.log(student);
       return personalStudents.students.indexOf(student) === index;
     });
-    console.log(validate.length);
     if (validate.length > 0)
       return res.status(400).json({ message: "Student already included" });
 
