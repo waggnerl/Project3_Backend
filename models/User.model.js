@@ -17,7 +17,8 @@ const userSchema = new Schema(
       required: [true, "Password is required."],
     },
     role: { type: String, enum: ["personal", "student"], required: true },
-    img: { type: String },
+    img: { type: String, 
+    default: "../public/profile.png"},
     students: [
       {
         type: Schema.Types.ObjectId,
