@@ -15,11 +15,12 @@ router.get("/:userId", async (req, res, next) => {
 router.put("/edit/:userId", (req, res, next) => {
   const userId = req.params.userId;
   const { name, img } = req.body;
+
   User.findByIdAndUpdate(userId, { name, img })
     .then((udpdate) => {
-      res.status(200).json(udpdate);
+      return res.status(200).json({ message: "User updated successfully" });
     })
-    .catch((err) => next(err));
+    .catch((err) => res.status(400).json({ message: "User not updated" }));
 });
 
 module.exports = router;
