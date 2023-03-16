@@ -45,38 +45,47 @@ router.post("/create", async (req, res, next) => {
     await Train.findByIdAndUpdate(trainId, {
       $push: { exercises: newExercise },
     });
-    return res.json(newExercise);
+    return res.status(200).json({ message: "Exercise created" });
   } catch (err) {
-    console.log(err);
+    return res.status(400).json({ message: "Exercise not created" });
   }
 });
 
 // Edit a specific exercise
 router.put("/update", async (req, res, next) => {
-  const { name, description, reps, sets, interval, activicties, exetciseId } =
-    req.body;
-  await Exercises.findByIdAndUpdate(exetciseId, {
-    name,
-    description,
-    reps,
-    sets,
-    interval,
-    activicties,
-  });
+  const { name, description, reps, sets, interval, activicties, exerciseId } =
+    req.body.body;
+  try {
+    await Exercise.findByIdAndUpdate(exerciseId, {
+      name,
+      description,
+      reps,
+      sets,
+      interval,
+      activicties,
+    });
 
-  const exerciseUpdated = await Exercise.findById(exetciseId);
-  res.json(exerciseUpdated);
+    await Exercise.findById(exerciseId);
+    return res.status(200).json({ message: "Exercise updated" });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: "Exercise not updated" });
+  }
 });
 
 // Delete a specific exercise
 router.post("/delete", async (req, res, next) => {
-  const { exetciseId } = req.body;
-  await User.findByIdAndUpdate(exetciseId, {
-    $pull: { exercises: exetciseId },
-  });
+  const { exetciseId, trainId } = req.body;
+  try {
+    await Train.findByIdAndUpdate(trainId, {
+      $pull: { exercises: exetciseId },
+    });
 
-  const deletedExercise = await Train.deleteOne({ _id: exetciseId });
-  res.json(deletedExercise);
+    await Exercise.deleteOne({ _id: exetciseId });
+    return res.status(200).json({ message: "Exercise deleted successfully" });
+  } catch (err) {
+    return res.status(400).json({ message: "Exercise not deleted" });
+  }
 });
 
 module.exports = router;

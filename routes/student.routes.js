@@ -30,15 +30,19 @@ router.get("/", async (req, res, next) => {
 router.post("/:personalId/:studentId", async (req, res, next) => {
   try {
     const { personalId, studentId } = req.params;
+
+    const personalStudents = await User.findById(personalId);
+    const validate = personalStudents.students.filter((student, index) => {
+      return personalStudents.students.indexOf(student) === index;
+    });
+    if (validate.length > 0)
+      return res.status(400).json({ message: "Student already included" });
+
     await User.findByIdAndUpdate(personalId, {
       $push: { students: studentId },
     });
 
-    const personalStudents = await User.findById(personalId).populate(
-      "students"
-    );
-
-    return res.json({ studentsId: personalStudents.students });
+    return res.status(200).json({ message: "Student included with success" });
   } catch (err) {
     console.log(err);
     return;
@@ -56,10 +60,11 @@ router.post("/:personalId/:studentId/delete", async (req, res, next) => {
       "students"
     );
 
-    return res.json("deleted user with success");
+    return res.status(200).json({ message: "Deleted student from professor" });
   } catch (err) {
-    console.log(err);
-    return;
+    return res
+      .status(200)
+      .json({ message: "Error deleting student from professor" });
   }
 });
 
