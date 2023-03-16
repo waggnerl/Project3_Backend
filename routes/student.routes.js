@@ -31,14 +31,12 @@ router.post("/:personalId/:studentId", async (req, res, next) => {
   try {
     const { personalId, studentId } = req.params;
 
-    const personalStudents = await User.findById(personalId).populate(
-      "students"
-    );
-
-    const validate = personalStudents.students.filter(
-      (student, index) => personalStudents.students.indexOf(studentId) !== index
-    );
-
+    const personalStudents = await User.findById(personalId);
+    const validate = personalStudents.students.filter((student, index) => {
+      console.log(student);
+      return personalStudents.students.indexOf(student) === index;
+    });
+    console.log(validate.length);
     if (validate.length > 0)
       return res.status(400).json({ message: "Student already included" });
 
