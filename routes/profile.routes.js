@@ -12,11 +12,10 @@ router.get("/:userId", async (req, res, next) => {
   }
 });
 
-
 router.put("/edit/:userId", (req, res, next) => {
   const userId = req.params.userId;
-  const { name, email, img, } = req.body;
-  User.findByIdAndUpdate(userId, { name, email, img })
+  const { name, img } = req.body;
+  User.findByIdAndUpdate(userId, { name, img })
     .then((udpdate) => {
       res.status(200).json(udpdate);
     })
