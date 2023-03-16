@@ -43,13 +43,18 @@ router.post("/create", async (req, res, next) => {
 // Edit a specific train
 router.put("/update", async (req, res, next) => {
   const { trainId, name, description, interval } = req.body;
-  await Train.findByIdAndUpdate(trainId, {
-    name,
-    description,
-    interval,
-  });
-  const trainUpdated = await Train.findById(trainId);
-  res.json(trainUpdated);
+  console.log(trainId, name, description, interval);
+  try {
+    await Train.findByIdAndUpdate(trainId, {
+      name,
+      description,
+      interval,
+    });
+    await Train.findById(trainId);
+    return res.status(200).json({ message: "Train updated successfully" });
+  } catch (err) {
+    res.status(400).json({ message: "Train not updated" });
+  }
 });
 
 // Delete a specific train

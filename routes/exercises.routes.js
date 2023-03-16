@@ -53,19 +53,24 @@ router.post("/create", async (req, res, next) => {
 
 // Edit a specific exercise
 router.put("/update", async (req, res, next) => {
-  const { name, description, reps, sets, interval, activicties, exetciseId } =
-    req.body;
-  await Exercise.findByIdAndUpdate(exetciseId, {
-    name,
-    description,
-    reps,
-    sets,
-    interval,
-    activicties,
-  });
+  const { name, description, reps, sets, interval, activicties, exerciseId } =
+    req.body.body;
+  try {
+    await Exercise.findByIdAndUpdate(exerciseId, {
+      name,
+      description,
+      reps,
+      sets,
+      interval,
+      activicties,
+    });
 
-  const exerciseUpdated = await Exercise.findById(exetciseId);
-  res.json(exerciseUpdated);
+    await Exercise.findById(exerciseId);
+    return res.status(200).json({ message: "Exercise updated" });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: "Exercise not updated" });
+  }
 });
 
 // Delete a specific exercise
